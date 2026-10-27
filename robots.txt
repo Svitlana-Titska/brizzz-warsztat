@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://brizzz-warsztat.netlify.app/sitemap.xml
