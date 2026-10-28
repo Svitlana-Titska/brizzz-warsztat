@@ -329,7 +329,7 @@ h1 em {
 .service .more {
   display: inline-block;
   margin-top: 15px;
-  color: var(--orange2);
+  color: var(--orange);
   font-size: 13px;
   font-weight: 800;
 }
