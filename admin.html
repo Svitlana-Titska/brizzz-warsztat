@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel administratora | BRIZZZ_WARSZTAT</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #101112;
+        color: #f5f5f5;
+        font-family: Arial, sans-serif;
+      }
+
+      main {
+        max-width: 760px;
+        margin: 40px auto;
+      }
+
+      h1,
+      h2 {
+        color: #ff7900;
+      }
+
+      section {
+        background: #191a1c;
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 22px;
+        margin-bottom: 20px;
+      }
+
+      input,
+      textarea,
+      button {
+        box-sizing: border-box;
+        width: 100%;
+        margin-top: 10px;
+        padding: 12px;
+        border-radius: 7px;
+        font: inherit;
+      }
+
+      input,
+      textarea {
+        color: #fff;
+        background: #0d0e0f;
+        border: 1px solid #444;
+      }
+
+      textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      button {
+        border: 0;
+        background: #ff7900;
+        color: #111;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      button.secondary {
+        background: #333;
+        color: white;
+      }
+
+      button:disabled {
+        opacity: 0.6;
+        cursor: wait;
+      }
+
+      .status {
+        color: #ccc;
+        white-space: pre-wrap;
+      }
+      .hidden {
+        display: none;
+      }
+      .review {
+        border-top: 1px solid #444;
+        padding-top: 16px;
+        margin-top: 16px;
+      }
+      .review p {
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>BRIZZZ_WARSZTAT</h1>
+      <p>Panel odpowiedzi na opinie</p>
+
+      <section id="loginPanel">
+        <h2>Logowanie właściciela</h2>
+        <form id="loginForm">
+          <label for="email">E-mail</label>
+          <input id="email" type="email" autocomplete="username" required />
+
+          <label for="password">Hasło</label>
+          <input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+
+          <button type="submit">Zaloguj się</button>
+        </form>
+      </section>
+
+      <section id="adminPanel" class="hidden">
+        <p>Zalogowano jako <strong id="ownerEmail"></strong></p>
+        <button id="logoutButton" class="secondary">Wyloguj się</button>
+        <p id="status" class="status" role="status"></p>
+        <div id="reviews"></div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      (() => {
+        const SUPABASE_URL = "https://qslbtlvoqanwhqlhafwt.supabase.co";
+
+        // Używamy wyłącznie klucza publishable, nigdy service_role.
+        const SUPABASE_KEY = "sb_publishable_kHTjSnqwOsXgw9UCGthOKw_jRjYOGYW";
+
+        const OWNER_ID = "edcd7e83-ae8a-4df2-b6a3-9e647e46cfeb";
+
+        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const loginPanel = document.getElementById("loginPanel");
+        const adminPanel = document.getElementById("adminPanel");
+        const loginForm = document.getElementById("loginForm");
+        const status = document.getElementById("status");
+        const reviews = document.getElementById("reviews");
+
+        const reviewList = [
+          {
+            id: "jacek-review",
+            name: "Jacek",
+            text: "Dziękuję za jakość obsługi i szybką naprawę. 👍",
+          },
+          {
+            id: "yevhenii-review",
+            name: "Yevhenii",
+            text: "Polecam ten warsztat! Mechanik szybko zdiagnozował problem i sprawnie go naprawił. Profesjonalna obsługa, szybka realizacja i wszystko bez zbędnego czekania. Jestem bardzo zadowolony z usługi!",
+          },
+        ];
+
+        function showStatus(message) {
+          status.textContent = message;
+        }
+
+        function makeElement(tag, className, text) {
+          const element = document.createElement(tag);
+          if (className) element.className = className;
+          if (text !== undefined) element.textContent = text;
+          return element;
+        }
+
+        async function refreshSession() {
+          const { data, error } = await client.auth.getSession();
+
+          if (error) {
+            showStatus("Nie udało się sprawdzić sesji.");
+            return;
+          }
+
+          const user = data.session?.user;
+
+          if (!user) {
+            loginPanel.classList.remove("hidden");
+            adminPanel.classList.add("hidden");
+            return;
+          }
+
+          if (user.id !== OWNER_ID) {
+            await client.auth.signOut();
+            loginPanel.classList.remove("hidden");
+            adminPanel.classList.add("hidden");
+            alert("To konto nie ma uprawnień właściciela.");
+            return;
+          }
+
+          loginPanel.classList.add("hidden");
+          adminPanel.classList.remove("hidden");
+          document.getElementById("ownerEmail").textContent = user.email || "";
+          await loadReviews();
+        }
+
+        loginForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const button = loginForm.querySelector("button");
+          button.disabled = true;
+          showStatus("Logowanie…");
+
+          const { error } = await client.auth.signInWithPassword({
+            email: document.getElementById("email").value.trim(),
+            password: document.getElementById("password").value,
+          });
+
+          button.disabled = false;
+
+          if (error) {
+            showStatus("Logowanie nie powiodło się. Sprawdź e-mail i hasło.");
+            console.error("Login error:", error.message);
+            return;
+          }
+
+          loginForm.reset();
+          await refreshSession();
+        });
+
+        document
+          .getElementById("logoutButton")
+          .addEventListener("click", async () => {
+            await client.auth.signOut();
+            reviews.replaceChildren();
+            showStatus("");
+            await refreshSession();
+          });
+
+        let reviewsLoading = false;
+
+        async function loadReviews() {
+          if (reviewsLoading) return;
+          reviewsLoading = true;
+
+          reviews.replaceChildren();
+          showStatus("Ładowanie opinii…");
+
+          const { data: replies, error } = await client
+            .from("review_replies")
+            .select("review_id, reply, updated_at");
+
+          if (error) {
+            showStatus(
+              "Nie udało się pobrać odpowiedzi. Sprawdź ustawienia Data API.",
+            );
+            console.error("Load replies error:", error.message);
+            reviewsLoading = false;
+            return;
+          }
+
+          for (const review of reviewList) {
+            const current = replies.find(
+              (item) => item.review_id === review.id,
+            );
+            const card = makeElement("article", "review");
+            card.append(
+              makeElement("h2", "", review.name),
+              makeElement("p", "", review.text),
+            );
+
+            if (current?.reply) {
+              const publishedReply = makeElement("div", "published-reply");
+
+              publishedReply.style.marginTop = "12px";
+              publishedReply.style.marginBottom = "16px";
+              publishedReply.style.padding = "7px 12px 4px";
+              publishedReply.style.background = "#252628";
+              publishedReply.style.borderRadius = "8px";
+
+              const replyTitle = makeElement(
+                "strong",
+                "",
+                "Opublikowana odpowiedź warsztatu",
+              );
+
+              const replyText = makeElement("p", "", current.reply);
+              replyText.style.margin = "8px 0 4px";
+
+              publishedReply.append(replyTitle, replyText);
+
+              card.appendChild(publishedReply);
+            }
+
+            const label = makeElement("label", "", "Odpowiedź warsztatu");
+            const textarea = document.createElement("textarea");
+            textarea.value = "";
+            textarea.maxLength = 3000;
+            textarea.placeholder = "Napisz odpowiedź po polsku…";
+            textarea.setAttribute("aria-label", "Odpowiedź dla " + review.name);
+
+            const saveButton = makeElement(
+              "button",
+              "",
+              current ? "Zapisz zmiany" : "Opublikuj odpowiedź",
+            );
+            saveButton.type = "button";
+
+            saveButton.addEventListener("click", async () => {
+              const reply = textarea.value.trim();
+
+              if (!reply) {
+                alert("Wpisz odpowiedź albo użyj przycisku usuwania.");
+                return;
+              }
+
+              saveButton.disabled = true;
+              showStatus("Zapisywanie odpowiedzi…");
+
+              const { data: sessionData } = await client.auth.getSession();
+              if (sessionData.session?.user?.id !== OWNER_ID) {
+                showStatus("Brak uprawnień właściciela. Zaloguj się ponownie.");
+                saveButton.disabled = false;
+                return;
+              }
+
+              let result;
+
+              if (current) {
+                result = await client
+                  .from("review_replies")
+                  .update({ reply, updated_at: new Date().toISOString() })
+                  .eq("review_id", review.id);
+              } else {
+                result = await client
+                  .from("review_replies")
+                  .insert({ review_id: review.id, reply });
+              }
+
+              saveButton.disabled = false;
+
+              if (result.error) {
+                showStatus("Nie udało się zapisać odpowiedzi.");
+                console.error("Save reply error:", result.error.message);
+                return;
+              }
+
+              showStatus("Odpowiedź została zapisana w bazie danych.");
+
+              textarea.value = "";
+
+              await loadReviews();
+            });
+
+            label.appendChild(textarea);
+            card.append(label, saveButton);
+
+            if (current) {
+              const deleteButton = makeElement(
+                "button",
+                "secondary",
+                "Usuń odpowiedź",
+              );
+              deleteButton.type = "button";
+
+              deleteButton.addEventListener("click", async () => {
+                if (!confirm("Czy na pewno usunąć odpowiedź?")) return;
+
+                deleteButton.disabled = true;
+
+                const { error } = await client
+                  .from("review_replies")
+                  .delete()
+                  .eq("review_id", review.id);
+
+                deleteButton.disabled = false;
+
+                if (error) {
+                  showStatus("Nie udało się usunąć odpowiedzi.");
+                  console.error("Delete reply error:", error.message);
+                  return;
+                }
+
+                showStatus("Odpowiedź została usunięta.");
+                await loadReviews();
+              });
+
+              card.appendChild(deleteButton);
+            }
+
+            reviews.appendChild(card);
+          }
+
+          showStatus("Opinie załadowane.");
+          reviewsLoading = false;
+        }
+
+        client.auth.onAuthStateChange((event, session) => {
+          if (event === "INITIAL_SESSION") return;
+
+          setTimeout(() => {
+            refreshSession();
+          }, 0);
+        });
+
+        refreshSession();
+      })();
+    </script>
+  </body>
+</html>

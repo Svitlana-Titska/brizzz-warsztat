@@ -253,6 +253,44 @@
   #zgloszenie .request-actions > .btn { width: 100% !important; flex: 1 1 auto !important; white-space: normal !important; }
 }
 
+
+.review-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.reaction-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 11px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, transform .2s;
+}
+
+.reaction-btn:hover {
+  border-color: var(--orange);
+  transform: translateY(-1px);
+}
+
+.reaction-btn.is-active {
+  border-color: var(--orange);
+  background: rgba(255, 140, 0, 0.15);
+  box-shadow: 0 0 0 1px var(--orange);
+}
+
+.reaction-btn span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoRepair","name":"BRIZZZ_WARSZTAT","telephone":"+48 888 810 884","email":"biuro.brizzz@gmail.com","address":{"@type":"PostalAddress","streetAddress":"ul. Tadeusza Kościuszki 100","postalCode":"42-500","addressLocality":"Będzin","addressCountry":"PL"},"areaServed":"Będzin i okolice","url":"https://brizzz-warsztat.netlify.app/","sameAs":["https://www.instagram.com/brizzz_warsztat/"],"description":"Mechanika pojazdowa, diagnostyka komputerowa, hamulce, zawieszenie, rozrząd, sprzęgło, wymiana oleju i filtrów oraz wulkanizacja w Będzinie.","priceRange":"$$","hasOfferCatalog":{"@type":"OfferCatalog","name":"Usługi warsztatu","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Mechanika pojazdowa"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Diagnostyka komputerowa"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Zawieszenie i hamulce"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Wymiana oleju i filtrów"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Rozrząd i sprzęgło"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Wulkanizacja i wymiana opon"}}]}}</script>
 </head>
@@ -303,11 +341,27 @@
 <p style="margin:10px 0;color:var(--text)">„Dziękuję za jakość obsługi i szybką naprawę. 👍”</p>
 <div style="font-weight:700">Jacek</div>
 <div style="font-size:13px;color:var(--muted);margin-top:3px">Mechanika pojazdowa</div>
+
+<div class="review-reactions" data-review-id="jacek-review">
+  <button type="button" class="reaction-btn" data-reaction="like" aria-label="Нравится">👍 <span>0</span></button>
+  <button type="button" class="reaction-btn" data-reaction="heart" aria-label="Сердце">❤️ <span>0</span></button>
+  <button type="button" class="reaction-btn" data-reaction="useful" aria-label="Полезно">💡 <span>0</span></button>
+  <button type="button" class="reaction-btn" data-reaction="thanks" aria-label="Спасибо">🙏 <span>0</span></button>
+</div>
+
 <div style="margin-top:22px;padding-top:20px;border-top:1px solid var(--border)">
  <div aria-label="Ocena 5 na 5" style="color:var(--orange);font-size:22px;letter-spacing:3px">★★★★★</div>
   <p style="margin:10px 0;color:var(--text)">„Polecam ten warsztat! Mechanik szybko zdiagnozował problem i sprawnie go naprawił. Profesjonalna obsługa, szybka realizacja i wszystko bez zbędnego czekania. Jestem bardzo zadowolony z usługi!”</p>
   <div style="font-weight:700">Yevhenii</div>
   <div style="font-size:13px;color:var(--muted);margin-top:3px">Mechanika pojazdowa</div>
+
+<div class="review-reactions" data-review-id="yevhenii-review">
+  <button type="button" class="reaction-btn" data-reaction="like" aria-label="Нравится">👍 <span>0</span></button>
+  <button type="button" class="reaction-btn" data-reaction="heart" aria-label="Сердце">❤️ <span>0</span></button>
+  <button type="button" class="reaction-btn" data-reaction="useful" aria-label="Полезно">💡 <span>0</span></button>
+  <button type="button" class="reaction-btn" data-reaction="thanks" aria-label="Спасибо">🙏 <span>0</span></button>
+</div>
+
 </div>
 </div>
 <div style="margin-top:22px"><a class="btn btn-primary" href="https://maps.app.goo.gl/NMXxKP9cmwGKDrEQ9" target="_blank" rel="noopener noreferrer">Zobacz wszystkie opinie w Google ↗</a></div></div><form class="review-form" name="opinie-klientow" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/review-sent.html"><input type="hidden" name="form-name" value="opinie-klientow"><p hidden><label>Nie wypełniaj tego pola: <input name="bot-field"></label></p><h3>Dodaj opinię</h3><div class="form-grid"><div class="form-field"><label for="review-name">Imię lub podpis *</label><input id="review-name" name="imie" autocomplete="name" required maxlength="80" placeholder="Jak mamy Cię podpisać?"></div><div class="form-field"><label for="review-service">Z jakiej usługi korzystałeś?</label><select id="review-service" name="usluga"><option value="">Wybierz usługę</option><option>Mechanika pojazdowa</option><option>Diagnostyka komputerowa</option><option>Zawieszenie lub hamulce</option><option>Wymiana oleju i filtrów</option><option>Rozrząd</option><option>Sprzęgło</option><option>Wulkanizacja / wymiana opon</option><option>Inna usługa</option></select></div></div><div class="rating-label">Ocena wizyty *</div><div class="rating-options" role="radiogroup" aria-label="Ocena wizyty"><label><input type="radio" name="ocena" value="5/5" required> ★★★★★</label><label><input type="radio" name="ocena" value="4/5"> ★★★★</label><label><input type="radio" name="ocena" value="3/5"> ★★★</label><label><input type="radio" name="ocena" value="2/5"> ★★</label><label><input type="radio" name="ocena" value="1/5"> ★</label></div><div class="form-field"><label for="review-message">Twoja opinia *</label><textarea id="review-message" name="opinia" required minlength="10" maxlength="2000" placeholder="Co było dobrze, a co możemy poprawić?"></textarea></div><div class="form-field"><label><input type="checkbox" name="zgoda-na-publikacje" value="tak" required style="width:auto;accent-color:var(--orange);margin-right:7px">Zgadzam się na opublikowanie mojej opinii na stronie warsztatu.</label></div><button class="btn btn-primary" type="submit">Wyślij opinię →</button><p class="review-note">Wysłana opinia trafi do warsztatu i zostanie sprawdzona przed ewentualną publikacją. Nie publikujemy automatycznie danych kontaktowych.</p></form></div></div></section>
@@ -524,4 +578,112 @@ if(whatsappButton && requestForm){
   else init();
 })();
 </script>
-</body></html>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+(function () {
+  const SUPABASE_URL = 'https://qslbtlvoqanwhqlhafwt.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_kHTjSnqwOsXgw9UCGthOKw_jRjYOGYW';
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  const reactionTypes = ['like', 'heart', 'useful', 'thanks'];
+  const reviewIds = ['jacek-review', 'yevhenii-review'];
+
+  function getVisitorId() {
+    const storageKey = 'brizzz_review_visitor_id';
+    let visitorId = localStorage.getItem(storageKey);
+
+    if (!visitorId) {
+      visitorId = crypto.randomUUID();
+      localStorage.setItem(storageKey, visitorId);
+    }
+
+    return visitorId;
+  }
+
+  const visitorId = getVisitorId();
+
+  async function loadReactions(container) {
+    const reviewId = container.dataset.reviewId;
+
+    const { data, error } = await supabaseClient
+      .from('review_reactions')
+      .select('reaction, visitor_id')
+      .eq('review_id', reviewId);
+
+    if (error) {
+      console.error('Не удалось загрузить реакции:', error.message);
+      return;
+    }
+
+    const counts = Object.fromEntries(
+      reactionTypes.map(type => [
+        type,
+        data.filter(item => item.reaction === type).length
+      ])
+    );
+
+    const activeReaction = data.find(
+      item => item.visitor_id === visitorId
+    )?.reaction;
+
+    container.querySelectorAll('.reaction-btn').forEach(button => {
+      const type = button.dataset.reaction;
+      const counter = button.querySelector('span');
+
+      if (counter) counter.textContent = counts[type] ?? 0;
+
+      button.classList.toggle('is-active', type === activeReaction);
+      button.setAttribute(
+        'aria-pressed',
+        String(type === activeReaction)
+      );
+    });
+  }
+
+  document.querySelectorAll('.review-reactions').forEach(container => {
+    loadReactions(container);
+
+    container.querySelectorAll('.reaction-btn').forEach(button => {
+      button.addEventListener('click', async () => {
+        const type = button.dataset.reaction;
+        const reviewId = container.dataset.reviewId;
+
+        if (!reviewIds.includes(reviewId) || !reactionTypes.includes(type)) {
+          return;
+        }
+
+        container.querySelectorAll('.reaction-btn').forEach(item => {
+          item.disabled = true;
+        });
+
+        const { error } = await supabaseClient.rpc(
+          'toggle_review_reaction',
+          {
+            p_review_id: reviewId,
+            p_reaction: type,
+            p_visitor_id: visitorId
+          }
+        );
+
+        if (error) {
+          console.error('Не удалось сохранить реакцию:', error.message);
+          alert('Не удалось сохранить реакцию. Попробуй ещё раз.');
+        }
+
+        await loadReactions(container);
+
+        container.querySelectorAll('.reaction-btn').forEach(item => {
+          item.disabled = false;
+        });
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
