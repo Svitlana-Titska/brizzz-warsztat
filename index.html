@@ -388,7 +388,7 @@
 
 </div>
 </div>
-<div style="margin-top:22px"><a class="btn btn-primary" href="https://maps.app.goo.gl/NMXxKP9cmwGKDrEQ9" target="_blank" rel="noopener noreferrer">Zobacz wszystkie opinie w Google ↗</a></div></div><form class="review-form" name="opinie-klientow" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/review-sent.html"><input type="hidden" name="form-name" value="opinie-klientow"><p hidden><label>Nie wypełniaj tego pola: <input name="bot-field"></label></p><h3>Dodaj opinię</h3><div class="form-grid"><div class="form-field"><label for="review-name">Imię lub podpis *</label><input id="review-name" name="imie" autocomplete="name" required maxlength="80" placeholder="Jak mamy Cię podpisać?"></div><div class="form-field"><label for="review-service">Z jakiej usługi korzystałeś?</label><select id="review-service" name="usluga"><option value="">Wybierz usługę</option><option>Mechanika pojazdowa</option><option>Diagnostyka komputerowa</option><option>Zawieszenie lub hamulce</option><option>Wymiana oleju i filtrów</option><option>Rozrząd</option><option>Sprzęgło</option><option>Wulkanizacja / wymiana opon</option><option>Inna usługa</option></select></div></div><div class="rating-label">Ocena wizyty *</div><div class="rating-options" role="radiogroup" aria-label="Ocena wizyty"><label><input type="radio" name="ocena" value="5/5" required> ★★★★★</label><label><input type="radio" name="ocena" value="4/5"> ★★★★</label><label><input type="radio" name="ocena" value="3/5"> ★★★</label><label><input type="radio" name="ocena" value="2/5"> ★★</label><label><input type="radio" name="ocena" value="1/5"> ★</label></div><div class="form-field"><label for="review-message">Twoja opinia *</label><textarea id="review-message" name="opinia" required minlength="10" maxlength="2000" placeholder="Co było dobrze, a co możemy poprawić?"></textarea></div><div class="form-field"><label><input type="checkbox" name="zgoda-na-publikacje" value="tak" required style="width:auto;accent-color:var(--orange);margin-right:7px">Zgadzam się na opublikowanie mojej opinii na stronie warsztatu.</label></div><button class="btn btn-primary" type="submit">Wyślij opinię →</button><p class="review-note">Wysłana opinia trafi do warsztatu i zostanie sprawdzona przed ewentualną publikacją. Nie publikujemy automatycznie danych kontaktowych.</p></form></div></div></section>
+<div style="margin-top:22px"><a class="btn btn-primary" href="https://maps.app.goo.gl/NMXxKP9cmwGKDrEQ9" target="_blank" rel="noopener noreferrer">Zobacz wszystkie opinie w Google ↗</a></div></div><form id="review-form" class="review-form" name="opinie-klientow"><input type="hidden" name="form-name" value="opinie-klientow"><p hidden><label>Nie wypełniaj tego pola: <input name="bot-field"></label></p><h3>Dodaj opinię</h3><div class="form-grid"><div class="form-field"><label for="review-name">Imię lub podpis *</label><input id="review-name" name="imie" autocomplete="name" required maxlength="80" placeholder="Jak mamy Cię podpisać?"></div><div class="form-field"><label for="review-service">Z jakiej usługi korzystałeś?</label><select id="review-service" name="usluga"><option value="">Wybierz usługę</option><option>Mechanika pojazdowa</option><option>Diagnostyka komputerowa</option><option>Zawieszenie lub hamulce</option><option>Wymiana oleju i filtrów</option><option>Rozrząd</option><option>Sprzęgło</option><option>Wulkanizacja / wymiana opon</option><option>Inna usługa</option></select></div></div><div class="rating-label">Ocena wizyty *</div><div class="rating-options" role="radiogroup" aria-label="Ocena wizyty"><label><input type="radio" name="ocena" value="5/5" required> ★★★★★</label><label><input type="radio" name="ocena" value="4/5"> ★★★★</label><label><input type="radio" name="ocena" value="3/5"> ★★★</label><label><input type="radio" name="ocena" value="2/5"> ★★</label><label><input type="radio" name="ocena" value="1/5"> ★</label></div><div class="form-field"><label for="review-message">Twoja opinia *</label><textarea id="review-message" name="opinia" required minlength="10" maxlength="2000" placeholder="Co było dobrze, a co możemy poprawić?"></textarea></div><div class="form-field"><label><input type="checkbox" name="zgoda-na-publikacje" value="tak" required style="width:auto;accent-color:var(--orange);margin-right:7px">Zgadzam się na opublikowanie mojej opinii na stronie warsztatu.</label></div><button class="btn btn-primary" type="submit">Wyślij opinię →</button><p class="review-note">Wysłana opinia trafi do warsztatu i zostanie sprawdzona przed ewentualną publikacją. Nie publikujemy automatycznie danych kontaktowych.</p></form></div></div></section>
 </main>
 <footer class="footer"><div class="wrap footer-inner"><span>© <span id="year"></span> BRIZZZ_WARSZTAT. Wszelkie prawa zastrzeżone.</span><span>Mechanika pojazdowa · Diagnostyka · Wulkanizacja · Będzin · <a href="privacy-policy.html" style="color:var(--orange);text-decoration:underline">Polityka prywatności</a></span></div></footer>
 
@@ -616,6 +616,117 @@ if(whatsappButton && requestForm){
 
   const reactionTypes = ['like', 'heart', 'useful', 'thanks'];
   const reviewIds = ['jacek-review', 'yevhenii-review'];
+
+  const reviewForm = document.getElementById('review-form');
+
+if (reviewForm) {
+  reviewForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const submitButton = reviewForm.querySelector(
+      'button[type="submit"]'
+    );
+
+    const name = reviewForm.querySelector('[name="imie"]').value.trim();
+    const service = reviewForm.querySelector('[name="usluga"]').value;
+    const ratingInput = reviewForm.querySelector(
+      '[name="ocena"]:checked'
+    );
+    const reviewText = reviewForm.querySelector(
+      '[name="opinia"]'
+    ).value.trim();
+    const consent = reviewForm.querySelector(
+      '[name="zgoda-na-publikacje"]'
+    ).checked;
+
+    if (!name || !service || !ratingInput || !reviewText || !consent) {
+      alert('Uzupełnij wszystkie wymagane pola i zaznacz zgodę na publikację.');
+      return;
+    }
+
+    submitButton.disabled = true;
+    const originalText = submitButton.textContent;
+    submitButton.textContent = 'Wysyłanie...';
+
+    try {
+      const { error } = await supabaseClient
+        .from('customer_reviews')
+        .insert({
+          name: name,
+          service: service,
+          rating: parseInt(ratingInput.value, 10),
+          review_text: reviewText,
+          status: 'pending'
+        });
+
+      if (error) throw error;
+
+      alert('Dziękujemy! Twoja opinia została wysłana i oczekuje na zatwierdzenie.');
+      reviewForm.reset();
+    } catch (error) {
+      console.error('Błąd wysyłania opinii:', error);
+      alert('Nie udało się wysłać opinii. Spróbuj ponownie za chwilę.');
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
+    }
+  });
+}
+
+async function loadApprovedReviews() {
+  const reviewsContainer = document.querySelector(
+    '#opinie .review-intro'
+  );
+
+  if (!reviewsContainer) {
+    console.error('Nie znaleziono sekcji Opinie.');
+    return;
+  }
+
+  let list = document.getElementById('customer-reviews-list');
+
+  if (!list) {
+    list = document.createElement('div');
+    list.id = 'customer-reviews-list';
+    reviewsContainer.appendChild(list);
+  }
+
+  list.replaceChildren();
+
+  const { data, error } = await supabaseClient
+    .from('customer_reviews')
+    .select('id, name, service, rating, review_text, created_at')
+    .eq('status', 'approved')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Nie udało się pobrać zatwierdzonych opinii:', error.message);
+    return;
+  }
+
+  (data || []).forEach(item => {
+    const card = document.createElement('article');
+    card.className = 'published-review customer-review-card';
+
+    const heading = document.createElement('h3');
+    heading.textContent = item.name;
+
+    const stars = document.createElement('p');
+    stars.textContent = '★'.repeat(item.rating) + '☆'.repeat(5 - item.rating);
+    stars.setAttribute('aria-label', `Ocena: ${item.rating} na 5`);
+
+    const service = document.createElement('p');
+    service.textContent = `Usługa: ${item.service}`;
+
+    const text = document.createElement('p');
+    text.textContent = item.review_text;
+
+    card.append(heading, stars, service, text);
+    list.appendChild(card);
+  });
+}
+
+loadApprovedReviews();
 
   async function loadOwnerReplies() {
   const { data, error } = await supabaseClient

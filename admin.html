@@ -116,6 +116,13 @@
         <p>Zalogowano jako <strong id="ownerEmail"></strong></p>
         <button id="logoutButton" class="secondary">Wyloguj się</button>
         <p id="status" class="status" role="status"></p>
+        <h2>Nowe opinie do zatwierdzenia</h2>
+        <div id="pendingReviews"></div>
+
+        <h2>Opublikowane opinie klientów</h2>
+        <div id="approvedReviews"></div>
+
+        <h2>Odpowiedzi warsztatu</h2>
         <div id="reviews"></div>
       </section>
     </main>
@@ -189,6 +196,9 @@
           loginPanel.classList.add("hidden");
           adminPanel.classList.remove("hidden");
           document.getElementById("ownerEmail").textContent = user.email || "";
+
+          await loadPendingReviews();
+          await loadApprovedReviews();
           await loadReviews();
         }
 
@@ -226,6 +236,219 @@
           });
 
         let reviewsLoading = false;
+
+        const pendingReviews = document.getElementById("pendingReviews");
+        let pendingReviewsLoading = false;
+
+        async function loadPendingReviews() {
+          if (!pendingReviews || pendingReviewsLoading) return;
+
+          pendingReviewsLoading = true;
+          pendingReviews.replaceChildren();
+
+          try {
+            const { data, error } = await client
+              .from("customer_reviews")
+              .select(
+                "id, name, service, rating, review_text, status, created_at",
+              )
+              .eq("status", "pending")
+              .order("created_at", { ascending: false });
+
+            if (error) {
+              console.error("Błąd pobierania nowych opinii:", error.message);
+              pendingReviews.textContent =
+                "Nie udało się pobrać nowych opinii.";
+              return;
+            }
+
+            if (!data || data.length === 0) {
+              pendingReviews.textContent =
+                "Brak nowych opinii do zatwierdzenia.";
+              return;
+            }
+
+            for (const item of data) {
+              const card = document.createElement("div");
+              card.style.cssText =
+                "padding:16px;margin:12px 0;border:1px solid #444;border-radius:10px;";
+
+              const heading = document.createElement("h3");
+              heading.textContent = `${item.name} — ${"★".repeat(item.rating)}`;
+
+              const service = document.createElement("p");
+              service.textContent = `Usługa: ${item.service}`;
+
+              const message = document.createElement("p");
+              message.textContent = item.review_text;
+              message.style.whiteSpace = "pre-wrap";
+
+              card.append(heading, service, message);
+
+              const approve = document.createElement("button");
+              approve.type = "button";
+              approve.textContent = "Zatwierdź";
+
+              approve.addEventListener("click", async () => {
+                if (!confirm("Opublikować tę opinię na stronie?")) return;
+
+                approve.disabled = true;
+
+                const { error } = await client
+                  .from("customer_reviews")
+                  .update({ status: "approved" })
+                  .eq("id", item.id);
+
+                if (error) {
+                  console.error(error);
+                  showStatus("Nie udało się zatwierdzić opinii.");
+                  approve.disabled = false;
+                  return;
+                }
+
+                showStatus("Opinia została opublikowana.");
+                await loadPendingReviews();
+                await loadApprovedReviews();
+              });
+
+              const reject = document.createElement("button");
+              reject.type = "button";
+              reject.textContent = "Odrzuć";
+              reject.className = "secondary";
+
+              reject.addEventListener("click", async () => {
+                if (!confirm("Odrzucić opinię? Pozostanie ukryta na stronie."))
+                  return;
+
+                reject.disabled = true;
+
+                const { error } = await client
+                  .from("customer_reviews")
+                  .update({ status: "rejected" })
+                  .eq("id", item.id);
+
+                if (error) {
+                  console.error(error);
+                  showStatus("Nie udało się odrzucić opinii.");
+                  reject.disabled = false;
+                  return;
+                }
+
+                showStatus("Opinia została odrzucona.");
+                await loadPendingReviews();
+              });
+
+              const remove = document.createElement("button");
+              remove.type = "button";
+              remove.textContent = "Usuń";
+              remove.className = "secondary";
+
+              remove.addEventListener("click", async () => {
+                if (!confirm("Czy na pewno usunąć tę opinię na stałe?")) return;
+
+                remove.disabled = true;
+
+                const { error } = await client
+                  .from("customer_reviews")
+                  .delete()
+                  .eq("id", item.id);
+
+                if (error) {
+                  console.error(error);
+                  showStatus("Nie udało się usunąć opinii.");
+                  remove.disabled = false;
+                  return;
+                }
+
+                showStatus("Opinia została usunięta.");
+                await loadPendingReviews();
+              });
+
+              card.append(approve, reject, remove);
+              pendingReviews.appendChild(card);
+            }
+          } finally {
+            pendingReviewsLoading = false;
+          }
+        }
+
+        const approvedReviews = document.getElementById("approvedReviews");
+
+        async function loadApprovedReviews() {
+          if (!approvedReviews) return;
+
+          approvedReviews.replaceChildren();
+
+          const { data, error } = await client
+            .from("customer_reviews")
+            .select("id, name, service, rating, review_text, created_at")
+            .eq("status", "approved")
+            .order("created_at", { ascending: false });
+
+          if (error) {
+            console.error(
+              "Błąd pobierania opublikowanych opinii:",
+              error.message,
+            );
+            approvedReviews.textContent =
+              "Nie udało się pobrać opublikowanych opinii.";
+            return;
+          }
+
+          if (!data || data.length === 0) {
+            approvedReviews.textContent =
+              "Brak opublikowanych opinii klientów.";
+            return;
+          }
+
+          data.forEach((item) => {
+            const card = document.createElement("article");
+            card.className = "review";
+
+            const heading = document.createElement("h3");
+            heading.textContent = `${item.name} — ${"★".repeat(item.rating)}`;
+
+            const service = document.createElement("p");
+            service.textContent = `Usługa: ${item.service}`;
+
+            const message = document.createElement("p");
+            message.textContent = item.review_text;
+            message.style.whiteSpace = "pre-wrap";
+
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.className = "secondary";
+            deleteButton.textContent = "Usuń opinię";
+
+            deleteButton.addEventListener("click", async () => {
+              if (
+                !confirm(`Czy na pewno usunąć opinię użytkownika ${item.name}?`)
+              ) {
+                return;
+              }
+
+              deleteButton.disabled = true;
+
+              const { error } = await client
+                .from("customer_reviews")
+                .delete()
+                .eq("id", item.id);
+
+              if (error) {
+                console.error("Błąd usuwania opinii:", error.message);
+                showStatus("Nie udało się usunąć opinii.");
+                deleteButton.disabled = false;
+                return;
+              }
+
+              showStatus("Opinia została usunięta.");
+              await loadApprovedReviews();
+            });
+
+            card.append(heading, service, message, deleteButton);
+            approvedReviews.appendChild(card);
+          });
+        }
 
         async function loadReviews() {
           if (reviewsLoading) return;
