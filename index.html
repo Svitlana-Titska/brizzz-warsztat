@@ -261,6 +261,30 @@
   margin-top: 12px;
 }
 
+.review-owner-reply {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: #1c1f22;
+  border-left: 3px solid var(--orange);
+  border-radius: 7px;
+  color: var(--text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.review-owner-reply strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--orange);
+  font-size: 13px;
+}
+
+.review-owner-reply p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
 .reaction-btn {
   display: inline-flex;
   align-items: center;
@@ -592,6 +616,46 @@ if(whatsappButton && requestForm){
 
   const reactionTypes = ['like', 'heart', 'useful', 'thanks'];
   const reviewIds = ['jacek-review', 'yevhenii-review'];
+
+  async function loadOwnerReplies() {
+  const { data, error } = await supabaseClient
+    .from('review_replies')
+    .select('review_id, reply');
+
+  if (error) {
+    console.error('Не удалось загрузить ответы мастерской:', error.message);
+    return;
+  }
+
+  document.querySelectorAll('.review-reactions').forEach(container => {
+    const reviewId = container.dataset.reviewId;
+    const existing = container.parentElement.querySelector(
+      '.review-owner-reply'
+    );
+
+    if (existing) existing.remove();
+
+    const item = data.find(
+      reply => reply.review_id === reviewId
+    );
+
+    if (!item || !item.reply) return;
+
+    const block = document.createElement('div');
+    block.className = 'review-owner-reply';
+
+    const title = document.createElement('strong');
+    title.textContent = 'Odpowiedź warsztatu';
+
+    const text = document.createElement('p');
+    text.textContent = item.reply;
+
+    block.append(title, text);
+    container.insertAdjacentElement('afterend', block);
+  });
+}
+
+loadOwnerReplies();
 
   function getVisitorId() {
     const storageKey = 'brizzz_review_visitor_id';
