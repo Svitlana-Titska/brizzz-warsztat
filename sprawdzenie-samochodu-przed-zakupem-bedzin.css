@@ -297,3 +297,11 @@ a {
     padding: 20px;
   }
 }
+
+.service-logo .logo-orange {
+  color: #ff6a00;
+}
+
+.service-logo .logo-white {
+  color: #ffffff;
+}
