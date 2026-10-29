@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://brizzz-warsztat.netlify.app/sitemap.xml
+Sitemap: https://brizzz-warsztat.pl/sitemap.xml
