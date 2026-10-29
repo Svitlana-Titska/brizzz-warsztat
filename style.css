@@ -398,7 +398,7 @@ h1 em {
 }
 .cta-band {
   padding: 48px 0;
-  background: linear-gradient(105deg, #ff6a00, #ff8b32);
+  background: linear-gradient(105deg, #e85f00 0%, #f57416 55%, #ff8b32 100%);
   color: #111;
 }
 .cta-inner {
