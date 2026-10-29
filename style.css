@@ -1600,3 +1600,201 @@ h1 em {
   transform: translateY(-2px);
   filter: drop-shadow(0 0 5px rgba(255, 106, 0, 0.35));
 }
+
+/* Приглушённый блок быстрого контакта */
+.cta-band--soft {
+  padding: 28px 0;
+  color: #f4f4f4;
+  background:
+    radial-gradient(
+      ellipse at left center,
+      rgba(255, 106, 0, 0.16),
+      transparent 58%
+    ),
+    linear-gradient(110deg, #29211d, #1b1c1e 65%, #202124);
+  border-top: 1px solid rgba(255, 106, 0, 0.35);
+  border-bottom: 1px solid #303033;
+}
+
+.cta-inner--soft {
+  gap: 22px;
+}
+
+.cta-copy {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cta-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 58px;
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(255, 106, 0, 0.5);
+  border-radius: 50%;
+  color: #ff791c;
+  background: rgba(255, 106, 0, 0.09);
+  font-size: 28px;
+}
+
+.cta-inner--soft h2 {
+  margin: 0 0 8px;
+  color: #f4f4f4;
+  font-size: clamp(22px, 3vw, 32px);
+}
+
+.cta-inner--soft p {
+  color: #c6c6c6;
+}
+
+.cta-phone--soft {
+  flex-shrink: 0;
+  background: rgba(15, 15, 16, 0.65) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255, 106, 0, 0.7);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.cta-phone--soft:hover {
+  background: rgba(255, 106, 0, 0.15) !important;
+  border-color: #ff791c;
+}
+
+.quick-contact {
+  position: relative;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.quick-contact summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  border-left: 1px solid #414144;
+  color: #dedede;
+  cursor: pointer;
+  list-style: none;
+}
+
+.quick-contact summary::-webkit-details-marker {
+  display: none;
+}
+
+.quick-contact summary span {
+  color: #ff791c;
+  font-size: 20px;
+}
+
+.quick-contact[open] summary span {
+  transform: rotate(180deg);
+}
+
+.quick-contact__content {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 270px;
+  padding: 18px;
+  border: 1px solid #484044;
+  border-radius: 10px;
+  background: #242426;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.quick-contact__content p {
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+
+.quick-contact__content a {
+  display: block;
+  margin-top: 12px;
+  color: #ff791c;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.quick-contact__content a:hover {
+  color: #ff9a50;
+}
+
+.quick-contact summary:focus-visible,
+.cta-phone--soft:focus-visible {
+  outline: 2px solid #ff791c;
+  outline-offset: 4px;
+}
+
+@media (max-width: 760px) {
+  .cta-band--soft {
+    padding: 24px 0;
+  }
+
+  .cta-inner--soft {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .cta-copy {
+    align-items: flex-start;
+    gap: 13px;
+  }
+
+  .cta-icon {
+    flex-basis: 46px;
+    width: 46px;
+    height: 46px;
+    font-size: 23px;
+  }
+
+  .cta-phone--soft {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .quick-contact {
+    width: 100%;
+    align-self: stretch;
+  }
+
+  .quick-contact summary {
+    justify-content: space-between;
+    padding: 12px 0;
+    border-left: 0;
+    border-top: 1px solid #414144;
+  }
+
+  .quick-contact__content {
+    position: static;
+    width: 100%;
+    margin-top: 8px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.quick-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #dedede;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.quick-contact:hover {
+  color: #ff791c;
+}
+
+.quick-contact span {
+  font-weight: 900;
+  font-size: 22px;
+  -webkit-text-stroke: 1px currentColor;
+}

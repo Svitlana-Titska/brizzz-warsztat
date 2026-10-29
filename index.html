@@ -73,10 +73,46 @@
 <article class="service"><div class="service-icon">＋</div><h3>Inne usterki</h3><p>Nie widzisz swojej usługi na liście? Opowiedz nam, co się dzieje.</p><a class="more" href="https://wa.me/48888810884" target="_blank" rel="noopener">Opisz problem →</a></article>
 </div><div class="price-note"><strong style="color:#fff">Wycena:</strong> koszt zależy od modelu samochodu, zakresu prac i części. Skontaktuj się z nami — przed rozpoczęciem naprawy ustalimy szczegóły.</div></div></section>
 <section class="section" id="promocje"><div class="wrap"><div class="section-head"><div class="kicker promo-kicker">PROMOCJE</div><h2>Skorzystaj z naszych promocji!</h2><p>W BRIZZZ_WARSZTAT dbamy o Twój samochód i Twój budżet.</p><p style="margin-top:14px">Sprawdź naszą aktualną promocję i przekonaj się, jak możesz zaoszczędzić na naprawie swojego auta.</p><p style="margin-top:22px"><strong>Chcesz naprawiać korzystniej?</strong></p><p style="margin-top:8px">Zobacz, co przygotowaliśmy dla Ciebie!</p><button class="btn btn-primary" id="show-promotions" type="button" aria-expanded="false" aria-controls="promotion-list" style="margin-top:24px">Zobacz promocje</button><div id="promotion-list" hidden style="margin:24px auto 0;max-width:760px;text-align:left"><article class="service" style="margin:0"><div class="kicker">AKTUALNA PROMOCJA</div><h3>100% zwrotu kosztów diagnostyki!</h3><p>Jeśli po diagnostyce zdecydujesz się naprawić samochód w BRIZZZ_WARSZTAT, zwrócimy 100% kosztów diagnostyki.</p><p><strong>Diagnostyka, a potem naprawa u nas?</strong> Koszt diagnostyki wraca do Ciebie — przy naprawie samochodu w naszym warsztacie.</p><a class="more" href="#zgloszenie">Umów wizytę →</a></article></div></div></div></section>
-<section class="cta-band"><div class="wrap cta-inner"><div><h2>Coś stuka, świeci się kontrolka?</h2><p>Zadzwoń — porozmawiamy o objawach i ustalimy, co dalej.</p></div><a class="btn cta-phone" href="tel:+48888810884"><span class="cta-phone-icon" aria-hidden="true">📞︎</span> &nbsp; +48 888 810 884</a></div></section>
+
+<section class="cta-band cta-band--soft" id="szybki-kontakt">
+  <div class="wrap cta-inner cta-inner--soft">
+    <div class="cta-copy">
+     <span class="cta-icon" aria-hidden="true">
+  <svg viewBox="0 0 24 24" width="26" height="26"
+       fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2
+      19.79 19.79 0 0 1-8.63-3.07
+      19.5 19.5 0 0 1-6-6
+      A19.79 19.79 0 0 1 2.12 4.18
+      2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72
+      c.12.96.36 1.9.7 2.8
+      a2 2 0 0 1-.45 2.11L8.09 9.91
+      a16 16 0 0 0 6 6l1.27-1.27
+      a2 2 0 0 1 2.11-.45
+      c.9.34 1.84.58 2.8.7
+      A2 2 0 0 1 22 16.92z"/>
+  </svg>
+</span>
+      <div>
+        <h2>Coś stuka, świeci się kontrolka?</h2>
+        <p>Zadzwoń — porozmawiamy o objawach i ustalimy, co dalej.</p>
+      </div>
+    </div>
+
+    <a class="btn cta-phone cta-phone--soft" href="tel:+48888810884">
+  +48 888 810 884
+</a>
+
+   <a class="quick-contact" href="#zgloszenie">
+  Szybki kontakt <span aria-hidden="true">↓</span>
+</a>
+  </div>
+</section>
+
 <section class="section" id="zgloszenie">
 <div class="wrap">
-<div class="request-card" id="zgloszenie"><h3>Zgłoś usterkę i wyślij zdjęcie</h3><p>Opisz problem, podaj dane samochodu i wypełnij formularz, aby wysłać zgłoszenie. Zdjęcie możesz dołączyć w czacie.</p>
+<div class="request-card"><h3>Zgłoś usterkę i wyślij zdjęcie</h3><p>Opisz problem, podaj dane samochodu i wypełnij formularz, aby wysłać zgłoszenie. Zdjęcie możesz dołączyć w czacie.</p>
 <form id="repair-request" name="repair-request" method="POST" data-netlify="true" enctype="multipart/form-data" action="/request-sent.html"><input type="hidden" name="form-name" value="repair-request"><div class="request-grid">
 <div class="request-field"><label for="request-car">Marka i model samochodu *</label><input id="request-car" name="car" required maxlength="120" placeholder="Np. Audi A4 2.0 TDI"></div>
 <div class="request-field"><label for="request-service">Jaka usługa Cię interesuje?</label><select id="request-service" name="service"><option>Diagnostyka komputerowa</option><option>Sprawdzenie samochodu przed zakupem</option><option>Diagnostyka mechaniczna</option><option>Rozrząd</option><option>Sprzęgło</option><option>Hamulce</option><option>Zawieszenie</option><option>Wymiana oleju i filtrów</option><option>Wymiana opon / wulkanizacja</option><option>Inna usterka</option></select></div>
