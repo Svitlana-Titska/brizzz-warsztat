@@ -1,0 +1,176 @@
+/* Styles for wymiana-sprzegla-bedzin.html */
+:root {
+  --service-bg: #101010;
+  --service-panel: #1a1a1a;
+  --service-text: #f5f5f5;
+  --service-muted: #c4c4c4;
+  --service-orange: #ff6a00;
+  --service-border: #333333;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  background: var(--service-bg);
+  color: var(--service-text);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.7;
+}
+a {
+  color: inherit;
+}
+.service-container {
+  width: min(100% - 36px, 1000px);
+  margin-inline: auto;
+}
+.service-header {
+  border-bottom: 1px solid var(--service-border);
+  background: #111;
+}
+.service-header__inner {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.service-logo {
+  color: var(--service-orange);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+.service-header__phone {
+  text-decoration: none;
+  font-weight: 700;
+}
+.service-breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 22px;
+  color: var(--service-muted);
+  font-size: 14px;
+}
+.service-breadcrumbs a {
+  color: var(--service-orange);
+}
+.service-hero {
+  padding: 56px 0 38px;
+}
+.service-eyebrow {
+  margin: 0 0 12px;
+  color: var(--service-orange);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+.service-hero h1 {
+  max-width: 850px;
+  margin: 0 0 20px;
+  font-size: clamp(34px, 6vw, 56px);
+  line-height: 1.12;
+}
+.service-lead {
+  max-width: 780px;
+  color: var(--service-muted);
+  font-size: 18px;
+}
+.service-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 25px;
+}
+.service-button {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border: 1px solid var(--service-orange);
+  border-radius: 7px;
+  background: var(--service-orange);
+  color: #111;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+.service-button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+.service-button--outline {
+  border-color: #555;
+  background: transparent;
+  color: var(--service-text);
+}
+.service-section,
+.service-contact {
+  margin: 22px 0;
+  padding: clamp(22px, 4vw, 32px);
+  border: 1px solid var(--service-border);
+  border-radius: 12px;
+  background: var(--service-panel);
+}
+.service-section h2,
+.service-contact h2 {
+  margin-top: 0;
+  font-size: clamp(23px, 4vw, 32px);
+  line-height: 1.25;
+}
+.service-section p,
+.service-contact p {
+  color: var(--service-muted);
+}
+.service-section li {
+  margin: 9px 0;
+  color: var(--service-muted);
+}
+.service-contact {
+  border-left: 4px solid var(--service-orange);
+}
+.service-contact a:not(.service-button) {
+  color: var(--service-orange);
+}
+.service-footer {
+  margin-top: 48px;
+  padding: 24px 0 32px;
+  border-top: 1px solid var(--service-border);
+}
+.service-footer p {
+  color: var(--service-muted);
+  font-size: 14px;
+}
+.service-footer a {
+  color: var(--service-orange);
+}
+@media (max-width: 600px) {
+  .service-header__inner {
+    min-height: 68px;
+  }
+  .service-logo {
+    font-size: 18px;
+  }
+  .service-header__phone {
+    font-size: 14px;
+  }
+  .service-hero {
+    padding-top: 38px;
+  }
+  .service-lead {
+    font-size: 16px;
+  }
+  .service-button {
+    width: 100%;
+  }
+}

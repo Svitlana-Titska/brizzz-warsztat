@@ -1577,3 +1577,26 @@ h1 em {
   font-size: 12px;
   color: var(--muted);
 }
+
+/* BRIZZZ_WARSZTAT — ikona sprawdzenia auta przed zakupem */
+.service-icon--car {
+  color: var(--orange, #ff6a00);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.service-icon--car svg {
+  display: block;
+  width: 32px;
+  height: 32px;
+  color: inherit;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+
+.service:hover .service-icon--car svg {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 0 5px rgba(255, 106, 0, 0.35));
+}
