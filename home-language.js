@@ -724,13 +724,17 @@
   // Перевод текста перед цветными названиями мессенджеров
   add("Napisz na", "Написати", "Написать", "Message us on");
   add("Wyślij przez", "Надіслати через", "Отправить через", "Send via");
+  add("Zdjęcie usterki (opcjonalnie)", "Фото несправності (необов’язково)", "Фото неисправности (необязательно)", "Fault photo (optional)");
   
   const langCodes = ["pl", "uk", "ru", "en"];
   const nodes = [];
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   let n;
   while ((n = walker.nextNode()))
-    if (n.nodeValue.trim())
+    if (
+      n.nodeValue.trim() &&
+      n.parentElement?.tagName !== "OPTION"
+    )
       nodes.push({ n, raw: n.nodeValue, key: n.nodeValue.trim() });
   const attrNodes = [
     ...document.querySelectorAll(
@@ -801,6 +805,20 @@
   optionRows.forEach(([pl, uk, ru, en]) => {
     add(pl, uk, ru, en);
   });
+  // Zachowujemy oryginalne polskie etykiety opcji i tłumaczymy je
+  // zawsze od wartości źródłowej, niezależnie od poprzednio wybranego języka.
+  const optionOriginals = [...document.querySelectorAll("option")].map((o) => {
+    const original = o.textContent.trim();
+    if (!o.hasAttribute("value") && original) o.value = original;
+    return { o, original };
+  });
+  optionRows.push([
+    "Wybierz usługę",
+    "Оберіть послугу",
+    "Выберите услугу",
+    "Select a service",
+  ]);
+
   const titleMap = {
     pl: "BRIZZZ_WARSZTAT — Autoserwis Będzin",
     uk: "BRIZZZ_WARSZTAT — Автосервіс у Бендзіні",
@@ -822,9 +840,9 @@
       const tr = L[lang][raw];
       if (tr !== undefined) el.setAttribute(a, tr);
     });
-    document.querySelectorAll("option").forEach((o) => {
-      const row = optionRows.find((r) => r[0] === o.textContent.trim());
-      if (row) o.textContent = row[idx + 1] || row[0];
+    optionOriginals.forEach(({ o, original }) => {
+      const row = optionRows.find((r) => r[0] === original);
+      if (row) o.textContent = row[idx] || row[0];
     });
     document.documentElement.lang = lang === "uk" ? "uk" : lang;
     document.title = titleMap[lang];
