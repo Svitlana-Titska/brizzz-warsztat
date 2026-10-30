@@ -1,0 +1,17 @@
+
+/* BRIZZZ_WARSZTAT — language switcher on service pages */
+.service-header__inner { flex-wrap: wrap; }
+.service-language { display:flex; align-items:center; gap:6px; margin-left:auto; }
+.service-language button {
+  display:inline-flex; align-items:center; gap:6px; padding:6px 8px;
+  color:var(--text, #f4f4f4); background:transparent;
+  border:1px solid rgba(255,255,255,.16); border-radius:8px;
+  cursor:pointer; font:inherit; font-size:12px;
+}
+.service-language button img { width:22px; height:15px; object-fit:cover; }
+.service-language button.active { border-color:#ff6a00; background:rgba(255,106,0,.14); }
+@media (max-width:700px) {
+ .service-language { width:100%; margin:8px 0 0; justify-content:flex-start; }
+ .service-language button { flex:1; justify-content:center; }
+ .service-language button span { font-size:11px; }
+}

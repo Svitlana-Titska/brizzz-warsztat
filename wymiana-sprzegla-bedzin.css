@@ -231,3 +231,20 @@ a {
 .service-phone:hover {
   color: #ff6a00;
 }
+
+
+/* Equal-height option cards with action links aligned at the bottom */
+.service-options {
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+}
+.service-options > .service-option {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.service-options > .service-option > a {
+  align-self: flex-start;
+  margin-top: auto;
+  padding-top: 18px;
+}

@@ -103,6 +103,18 @@ a {
   border-color: var(--orange);
   color: var(--orange);
 }
+
+/* Telegram button uses the same neutral outline style as WhatsApp. */
+.hero-actions .btn-telegram {
+  border-color: #56595e;
+  background: #111;
+  color: #fff;
+}
+.hero-actions .btn-telegram:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: #111;
+}
 .hero {
   position: relative;
   isolation: isolate;
@@ -1797,4 +1809,166 @@ html {
   font-weight: 900;
   font-size: 22px;
   -webkit-text-stroke: 1px currentColor;
+}
+
+/* PROMOCJE — nowoczesny blok */
+.promo-showcase {
+  position: relative;
+  overflow: hidden;
+  padding: 100px 0;
+  background:
+    radial-gradient(
+      ellipse at 85% 20%,
+      rgba(255, 106, 0, 0.13),
+      transparent 42%
+    ),
+    linear-gradient(115deg, #101113 0%, #191512 52%, #0c0d0f 100%);
+  border-bottom: 1px solid rgba(255, 112, 0, 0.45);
+}
+
+.promo-showcase-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.promo-content {
+  max-width: 720px;
+}
+
+.promo-label {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--orange);
+  font-weight: 800;
+  letter-spacing: 4px;
+  margin-bottom: 22px;
+}
+
+.promo-label span {
+  width: 90px;
+  height: 2px;
+  background: var(--orange);
+}
+
+.promo-content h2 {
+  color: #fff;
+  font-size: clamp(34px, 4vw, 58px);
+  line-height: 1.1;
+  margin: 0 0 20px;
+}
+
+.promo-content p {
+  color: #c2c2c2;
+  font-size: 18px;
+  line-height: 1.7;
+  max-width: 650px;
+  margin-bottom: 28px;
+}
+
+.promo-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  padding: 17px 28px;
+  font-size: 17px;
+}
+
+.promo-button span {
+  font-size: 23px;
+}
+
+.promotion-list {
+  max-width: 720px;
+  margin-top: 30px;
+}
+
+.promotion-list[hidden] {
+  display: none !important;
+}
+
+.promotion-list .service {
+  margin: 0;
+  background: rgba(18, 19, 21, 0.96);
+  border: 1px solid rgba(255, 112, 0, 0.35);
+}
+
+@media (max-width: 700px) {
+  .promo-showcase {
+    padding: 65px 0;
+    background:
+      radial-gradient(
+        ellipse at 90% 10%,
+        rgba(255, 106, 0, 0.12),
+        transparent 48%
+      ),
+      linear-gradient(145deg, #151311, #0c0d0f 78%);
+  }
+
+  .promo-content h2 {
+    font-size: 34px;
+  }
+
+  .promo-content p {
+    font-size: 16px;
+  }
+}
+
+/* PROMOCJE — zdjęcie samochodu na podnośniku */
+
+.promo-showcase-inner {
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  align-items: center;
+  gap: 45px;
+}
+
+.promo-image {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  min-height: 360px;
+}
+
+.promo-image img {
+  display: block;
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 16px;
+  filter: saturate(0.95);
+}
+
+@media (max-width: 768px) {
+  .promo-showcase-inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .promo-image img {
+    height: 260px;
+  }
+}
+
+
+/* Consistent service cards: equal heights and aligned action links */
+.services {
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+}
+.services > .service {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 270px;
+}
+.services > .service > p {
+  margin-bottom: 0;
+}
+.services > .service > .more {
+  display: inline-block;
+  align-self: flex-start;
+  margin-top: auto;
+  padding-top: 18px;
 }
