@@ -1,0 +1,32 @@
+BRIZZZ_WARSZTAT — połączenie opinii z panelem administratora
+
+CO ZMIENIONE
+- Nowa opinia jest zapisywana w Supabase jako status=pending.
+- Następnie oryginalna forma nadal wysyłana jest do Netlify Forms, więc istniejące powiadomienie e-mail pozostaje aktywne.
+- Po zatwierdzeniu opinia jest dostępna w panelu admina i może być pokazana na stronie.
+- Odpowiedzi warsztatu dla nowych, zatwierdzonych opinii są dostępne w panelu.
+- Na stronie głównej są wyświetlane zatwierdzone opinie z bazy oraz odpowiedzi warsztatu.
+
+WAŻNE — JEDEN RAZ НАСТРОИТЬ ПЕРЕМЕННЫЕ NETLIFY
+В Netlify: Site configuration → Environment variables добавь:
+1) SUPABASE_URL = https://qslbtlvoqanwhqlhafwt.supabase.co
+2) SUPABASE_SERVICE_ROLE_KEY = service_role secret key проекта Supabase.
+
+Ключ service_role нельзя помещать в HTML/JS, GitHub или этот архив. Вставляй его только в Environment variables Netlify. Не используй publishable/anon key вместо service_role для этой серверной функции.
+После добавления переменных сделай новый deploy сайта.
+
+СОВМЕСТИМОСТЬ С БАЗОЙ
+Функция использует уже используемую админ-панелью таблицу customer_reviews и поля:
+name, service, rating, review_text, status, created_at.
+Для новых записей status устанавливается в pending. Предполагается, что id и created_at создаются базой автоматически.
+Функция также читает review_replies (review_id, reply, updated_at), как это уже делает admin.html.
+
+ПРОВЕРКА ПОСЛЕ ПУБЛИКАЦИИ
+1) Отправить тестовый отзыв на опубликованном сайте.
+2) Убедиться, что пришло письмо Netlify Forms.
+3) Открыть /admin.html — отзыв должен появиться в «Nowe opinie do zatwierdzenia».
+4) Нажать «Zatwierdź» — после этого отзыв должен появиться на главной странице.
+5) В админ-панели в разделе «Odpowiedzi warsztatu» можно опубликовать ответ.
+
+ОГРАНИЧЕНИЕ
+Архив не содержит секретного service_role ключа и не может проверить удалённую базу Supabase из локальной среды. Полная работа нового соединения начинается после добавления SUPABASE_SERVICE_ROLE_KEY в Netlify и публикации. Существующие отзывы и ответы не удаляются и не мигрируются.

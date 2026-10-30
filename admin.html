@@ -226,6 +226,7 @@
                 showStatus("Opinia została opublikowana.");
                 await loadPendingReviews();
                 await loadApprovedReviews();
+                await loadReviews();
               });
 
               const reject = document.createElement("button");
@@ -387,9 +388,30 @@
             return;
           }
 
-          for (const review of reviewList) {
+          const { data: approvedCustomerReviews, error: approvedError } = await client
+            .from("customer_reviews")
+            .select("id, name, service, rating, review_text")
+            .eq("status", "approved")
+            .order("created_at", { ascending: false });
+
+          if (approvedError) {
+            showStatus("Nie udało się pobrać opinii do odpowiedzi.");
+            console.error("Load approved customer reviews error:", approvedError.message);
+            reviewsLoading = false;
+            return;
+          }
+
+          const dynamicReviewList = (approvedCustomerReviews || []).map((item) => ({
+            id: String(item.id),
+            name: item.name,
+            text: item.review_text,
+          }));
+
+          const allReviews = [...reviewList, ...dynamicReviewList];
+
+          for (const review of allReviews) {
             const current = replies.find(
-              (item) => item.review_id === review.id,
+              (item) => String(item.review_id) === String(review.id),
             );
             const card = makeElement("article", "review");
             card.append(
