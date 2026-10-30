@@ -49,16 +49,23 @@
 
       if (!response.ok) {
         const result = await response.json().catch(() => ({}));
-        throw new Error(result.error || "Nie udało się wysłać opinii. Spróbuj ponownie.");
+        throw new Error(
+          result.error || "Nie udało się wysłać opinii. Spróbuj ponownie.",
+        );
       }
 
       // Submit the same form to Netlify Forms so the existing email notification remains active.
       form.dataset.netlifyForwarding = "true";
       HTMLFormElement.prototype.submit.call(form);
     } catch (error) {
-      status.textContent = error.message || "Wystąpił błąd. Spróbuj ponownie.";
-      submitButton.disabled = false;
-      sending = false;
+      console.error("Supabase review save failed:", error);
+
+      // Supabase failed — still forward the review to Netlify Forms.
+      // This keeps the existing email notification working.
+      status.textContent = "Wysyłanie opinii…";
+
+      form.dataset.netlifyForwarding = "true";
+      HTMLFormElement.prototype.submit.call(form);
     }
   });
 })();
