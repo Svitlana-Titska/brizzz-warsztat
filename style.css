@@ -1980,14 +1980,17 @@ html {
   }
 }
 
-/* BRIZZZ — mobile hero */
-@media (max-width: 540px) {
-  .hero:before {
-    background-size: cover;
-    background-position: center center;
-    transform: none;
-  }
-}
+
 
 /* Wordmark colors */
 .brand-orange{color:#ff6a00!important}.brand-white{color:#f5f5f5!important}
+
+/* BRIZZZ HERO — mobile: fit image to screen width, do not crop sides */
+@media (max-width: 540px) {
+  .hero:before {
+    background-size: 100% auto !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    transform: none;
+  }
+}
