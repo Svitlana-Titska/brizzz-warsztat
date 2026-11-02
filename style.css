@@ -1992,9 +1992,7 @@ html {
 @media (max-width: 540px) {
   .hero:before {
     background-size: 100% auto !important;
-    background-position:
-      center 0,
-      5% !important;
+    background-position: center 20% !important;
     background-repeat: no-repeat !important;
     transform: none;
   }
