@@ -38,7 +38,7 @@
 <div class="topline"></div>
 <header class="header"><div class="wrap nav"><a class="brand" href="#start" aria-label="BRIZZZ WARSZTAT — strona główna"><span>BRIZZZ</span>_WARSZTAT</a><nav class="navlinks" aria-label="Nawigacja"><a href="#uslugi">Usługi</a><a href="#promocje">PROMOCJE</a><a href="#zgloszenie">Zgłoszenie</a><a href="#onas">O warsztacie</a><a href="#kontakt">Kontakt</a><a href="#opinie">Opinie</a></nav><a class="btn btn-primary header-call-button" id="header-call-button" href="tel:+48888810884" aria-expanded="false">📞︎ Zadzwoń teraz<span class="header-call-number" id="header-call-number" role="status" aria-live="polite">+48 888 810 884</span></a></div></header>
 <main>
-<section class="hero" id="start"><div class="wrap"><div class="hero-content"><div class="eyebrow">Warsztat samochodowy · Będzin</div><h1>Twój samochód.<br><em>Nasza robota.</em></h1><p>Mechanika pojazdowa, diagnostyka komputerowa i serwis, któremu możesz zaufać. Konkretnie, fachowo i bez zbędnego gadania.</p><div class="hero-actions"><a class="btn btn-primary" href="tel:+48888810884">📞︎ &nbsp; +48 888 810 884</a><a class="btn btn-outline" href="https://wa.me/48888810884" target="_blank" rel="noopener">Napisz na <span class="brand-chat-word">WhatsApp</span> ↗</a><a class="btn btn-outline btn-telegram" href="https://t.me/brizzz_warsztat" target="_blank" rel="noopener noreferrer">Napisz na <span class="brand-chat-word">Telegram</span> ↗</a></div><div class="hero-points"><span><b class="tick">✓</b> Diagnostyka i naprawy</span><span><b class="tick">✓</b> Jasny kontakt przed naprawą</span><span><b class="tick">✓</b> Będzin i okolice</span></div></div></div></section>
+<section class="hero" id="start"><img class="hero-mobile-image" src="assets/brizzz-hero.webp" alt="BRIZZZ_WARSZTAT — warsztat samochodowy"><div class="wrap"><div class="hero-content"><div class="eyebrow">Warsztat samochodowy · Będzin</div><h1>Twój samochód.<br><em>Nasza robota.</em></h1><p>Mechanika pojazdowa, diagnostyka komputerowa i serwis, któremu możesz zaufać. Konkretnie, fachowo i bez zbędnego gadania.</p><div class="hero-actions"><a class="btn btn-primary" href="tel:+48888810884">📞︎ &nbsp; +48 888 810 884</a><a class="btn btn-outline" href="https://wa.me/48888810884" target="_blank" rel="noopener">Napisz na <span class="brand-chat-word">WhatsApp</span> ↗</a><a class="btn btn-outline btn-telegram" href="https://t.me/brizzz_warsztat" target="_blank" rel="noopener noreferrer">Napisz na <span class="brand-chat-word">Telegram</span> ↗</a></div><div class="hero-points"><span><b class="tick">✓</b> Diagnostyka i naprawy</span><span><b class="tick">✓</b> Jasny kontakt przed naprawą</span><span><b class="tick">✓</b> Będzin i okolice</span></div></div></div></section>
 <div class="strip"><div class="wrap strip-inner"><div class="strip-item"><div class="strip-icon">⌕</div><div><strong>Konkretna diagnoza</strong><small>Szukamy przyczyny, nie zgadujemy.</small></div></div><div class="strip-item"><div class="strip-icon">✆</div><div><strong>Jasna komunikacja</strong><small>Wyjaśniamy, co trzeba naprawić.</small></div></div><div class="strip-item"><div class="strip-icon">⚙</div><div><strong>Naprawy bez zgadywania</strong><small>Dobieramy rozwiązanie do problemu.</small></div></div></div></div>
 <div class="language-note"><div class="wrap"><div class="language-note-inner"><div class="language-note-heading"><span class="language-note-icon">◎</span><div><span class="language-kicker">DOGADAMY SIĘ</span><strong>Obsługujemy klientów w 4 językach</strong><small>Wybierz język, w którym czujesz się najlepiej.</small></div></div><div class="language-list"><button type="button" class="language-chip" data-language="pl" aria-pressed="true"><img class="language-flag" src="assets/flag-pl.png" alt="Flaga Polski"> Polski</button><button type="button" class="language-chip" data-language="uk" aria-pressed="false"><img class="language-flag" src="assets/flag-ua.png" alt="Прапор України"> Українська</button><button type="button" class="language-chip" data-language="ru" aria-pressed="false"><img class="language-flag" src="assets/flag-ru.png" alt="Флаг России"> Русский</button><button type="button" class="language-chip" data-language="en" aria-pressed="false"><img class="language-flag" src="assets/flag-gb.png" alt="Flag of the United Kingdom"> English</button></div></div></div></div>
 
@@ -320,6 +320,17 @@
   try{saved=localStorage.getItem('brizzz-language')||'pl';}catch(e){}
   apply(saved);
   window.brizzzApplyHomeLanguage=apply;
+})();
+</script>
+<script>
+/* BRIZZZ scroll reveal — graceful fallback if observer is unavailable */
+(function(){
+  const targets=document.querySelectorAll('.section, .promo-showcase, .cta-band, .service, .contact-card, .review-card');
+  if(!targets.length)return;
+  targets.forEach(el=>el.classList.add('scroll-reveal'));
+  if(!('IntersectionObserver' in window)){targets.forEach(el=>el.classList.add('is-visible'));return;}
+  const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');io.unobserve(entry.target);}}),{threshold:.08,rootMargin:'0px 0px -35px 0px'});
+  targets.forEach(el=>io.observe(el));
 })();
 </script>
 <script src="/review-submit.js"></script>
