@@ -1972,11 +1972,19 @@ html {
   padding-top: 18px;
 }
 
-/* BRIZZZ: уменьшенный фон автомобиля на мобильных */
+/* Mobile Hero background */
 @media (max-width: 540px) {
   .hero:before {
-    background-size: auto 78%;
-    background-position: center bottom;
-    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  }
+}
+
+/* BRIZZZ — mobile hero */
+@media (max-width: 540px) {
+  .hero:before {
+    background-size: cover;
+    background-position: center center;
+    transform: none;
   }
 }
