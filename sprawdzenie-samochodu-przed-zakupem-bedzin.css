@@ -359,3 +359,13 @@ a {
   margin-top: auto;
   padding-top: 18px;
 }
+
+/* BRIZZZ brand wordmark colors */
+.service-logo .logo-orange { color: var(--orange, #ff6a00) !important; }
+.service-logo .logo-white { color: #f5f5f5 !important; }
+
+.brand-orange{color:#ff6a00!important}.brand-white{color:#f5f5f5!important}
+
+/* FINAL BRAND COLORS */
+.brand-orange { color: #ff6a00 !important; }
+.brand-white { color: #f5f5f5 !important; }

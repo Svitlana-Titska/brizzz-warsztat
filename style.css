@@ -1989,30 +1989,14 @@ html {
   }
 }
 
+/* BRIZZZ brand wordmark: orange BRIZZZ + white _WARSZTAT */
+.brand .brand-orange { color: var(--orange, #ff6a00) !important; }
+.brand .brand-white { color: #f5f5f5 !important; }
 
-/* BRIZZZ FINAL RESPONSIVE HERO + MOTION */
-.hero-mobile-image { display: none; }
-@media (max-width: 700px) {
-  .hero { display: block; min-height: 0; background: #0c0d0f; }
-  .hero:before, .hero:after { display: none; }
-  .hero-mobile-image { display: block; width: 100%; height: auto; aspect-ratio: 1920 / 900; object-fit: contain; object-position: center; background: #0c0d0f; }
-  .hero > .wrap { width: min(var(--max), calc(100% - 40px)); }
-  .hero-content { max-width: none; padding: 30px 0 42px; }
-  .hero h1 { font-size: clamp(36px, 8.5vw, 52px); letter-spacing: -1.7px; line-height: 1.04; margin: 16px 0 18px; }
-  .hero p { font-size: 16px; line-height: 1.65; margin-bottom: 22px; }
-  .hero-actions { display: grid; grid-template-columns: 1fr; gap: 10px; }
-  .hero-actions .btn { width: 100%; min-height: 58px; }
-  .hero-points { display: grid; gap: 12px; margin-top: 26px; font-size: 14px; }
-}
-@media (min-width: 701px) {
-  .hero-mobile-image { display: none !important; }
-}
-/* Brand wordmark: BRIZZZ orange, underscore + WARSZTAT white */
-.brand { color: #fff; }
-.brand span { color: var(--orange); }
-.service-logo .logo-orange { color: #ff6a00 !important; }
-.service-logo .logo-white { color: #fff !important; }
-/* Scroll entrance animation */
-.scroll-reveal { opacity: 0; transform: translate3d(0, 22px, 0); transition: opacity .65s ease, transform .65s cubic-bezier(.2,.7,.2,1); }
-.scroll-reveal.is-visible { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .scroll-reveal { opacity: 1 !important; transform: none !important; transition: none !important; } }
+/* Brand colors in visual labels/eyebrows */
+.brand-orange { color: #ff6a00 !important; }
+.brand-white { color: #f5f5f5 !important; }
+
+/* FINAL BRAND COLORS */
+.brand-orange { color: #ff6a00 !important; }
+.brand-white { color: #f5f5f5 !important; }
