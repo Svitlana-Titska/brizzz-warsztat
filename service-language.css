@@ -15,3 +15,6 @@
  .service-language button { flex:1; justify-content:center; }
  .service-language button span { font-size:11px; }
 }
+
+/* Wordmark colors */
+.brand-orange{color:#ff6a00!important}.brand-white{color:#f5f5f5!important}
