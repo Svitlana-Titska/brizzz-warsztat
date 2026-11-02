@@ -129,7 +129,7 @@ a {
   position: absolute;
   inset: 0;
   z-index: -2;
-  background: url("assets/brizzz-about.webp") center 48% / cover no-repeat;
+  background: url("assets/brizzz-hero.webp") center 48% / cover no-repeat;
   opacity: 1;
   filter: none;
 }
@@ -1951,7 +1951,6 @@ html {
   }
 }
 
-
 /* Consistent service cards: equal heights and aligned action links */
 .services {
   grid-auto-rows: 1fr;
@@ -1971,4 +1970,13 @@ html {
   align-self: flex-start;
   margin-top: auto;
   padding-top: 18px;
+}
+
+/* BRIZZZ: уменьшенный фон автомобиля на мобильных */
+@media (max-width: 540px) {
+  .hero:before {
+    background-size: auto 78%;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+  }
 }
