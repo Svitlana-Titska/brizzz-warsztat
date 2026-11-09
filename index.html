@@ -25,84 +25,14 @@
 
 <link rel="stylesheet" href="style.css">
 
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "AutoRepair",
-  "name": "BRIZZZ_WARSZTAT",
-  "telephone": "+48 888 810 884",
-  "email": "biuro.brizzz@gmail.com",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "ul. Tadeusza Kościuszki 100",
-    "postalCode": "42-500",
-    "addressLocality": "Będzin",
-    "addressCountry": "PL"
-  },
-  "areaServed": "Będzin i okolice",
-  "url": "https://brizzz-warsztat.pl/",
-  "sameAs": ["https://www.instagram.com/brizzz_warsztat/"],
-  "description": "Mechanika pojazdowa, diagnostyka komputerowa, hamulce, zawieszenie, rozrząd, sprzęgło, wymiana oleju i filtrów oraz wulkanizacja w Będzinie.",
-  "priceRange": "$$",
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Usługi warsztatu",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Mechanika pojazdowa"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Diagnostyka komputerowa"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Zawieszenie i hamulce"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Wymiana oleju i filtrów"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Rozrząd i sprzęgło"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Wulkanizacja i wymiana opon"
-        }
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Sprawdzenie samochodu przed zakupem"
-        }
-      }
-    ]
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"AutoRepair","name":"BRIZZZ_WARSZTAT","telephone":"+48 888 810 884","email":"biuro.brizzz@gmail.com","address":{"@type":"PostalAddress","streetAddress":"ul. Tadeusza Kościuszki 100","postalCode":"42-500","addressLocality":"Będzin","addressCountry":"PL"},"areaServed":"Będzin i okolice","url":"https://brizzz-warsztat.pl/","sameAs":["https://www.instagram.com/brizzz_warsztat/"],"description":"Mechanika pojazdowa, diagnostyka komputerowa, hamulce, zawieszenie, rozrząd, sprzęgło, wymiana oleju i filtrów oraz wulkanizacja w Będzinie.","priceRange":"$$","hasOfferCatalog":{"@type":"OfferCatalog","name":"Usługi warsztatu","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Mechanika pojazdowa"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Diagnostyka komputerowa"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Zawieszenie i hamulce"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Wymiana oleju i filtrów"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Rozrząd i sprzęgło"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Wulkanizacja i wymiana opon"}, 
+  {
+  "@type": "Offer",
+  "itemOffered": {
+    "@type": "Service",
+    "name": "Sprawdzenie samochodu przed zakupem"
   }
-}
-</script>
-
+}}]}}</script>
 </head>
 <body>
 <div class="topline"></div>
@@ -395,5 +325,65 @@
 <script src="/review-submit.js"></script>
 <script src="/approved-reviews.js"></script>
 <script src="/home-language.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function () {
+  const SUPABASE_URL = 'https://qslbtlvoqanwhqlhafwt.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_kHTjSnqwOsXgw9UCGthOKw_jRjYOGYW';
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const reactionTypes = ['like', 'heart', 'useful', 'thanks'];
+  const reviewIds = ['jacek-review', 'yevhenii-review'];
+
+  function getVisitorId() {
+    const key = 'brizzz_review_visitor_id';
+    let id = localStorage.getItem(key);
+    if (!id) { id = crypto.randomUUID(); localStorage.setItem(key, id); }
+    return id;
+  }
+  const visitorId = getVisitorId();
+
+  async function loadReactions(container) {
+    const reviewId = container.dataset.reviewId;
+    const { data, error } = await supabaseClient.from('review_reactions')
+      .select('reaction, visitor_id').eq('review_id', reviewId);
+    if (error) { console.error('Не удалось загрузить реакции:', error.message); return; }
+    const rows = data || [];
+    const counts = Object.fromEntries(reactionTypes.map(type => [type, rows.filter(x => x.reaction === type).length]));
+    const active = rows.find(x => x.visitor_id === visitorId)?.reaction;
+    container.querySelectorAll('.reaction-btn').forEach(button => {
+      const type = button.dataset.reaction;
+      const counter = button.querySelector('span');
+      if (counter) counter.textContent = counts[type] ?? 0;
+      button.classList.toggle('is-active', type === active);
+      button.setAttribute('aria-pressed', String(type === active));
+    });
+  }
+
+  document.querySelectorAll('.review-reactions').forEach(container => {
+    const reviewId = container.dataset.reviewId;
+    if (!reviewIds.includes(reviewId)) return;
+    loadReactions(container);
+    container.querySelectorAll('.reaction-btn').forEach(button => {
+      button.addEventListener('click', async () => {
+        const type = button.dataset.reaction;
+        if (!reactionTypes.includes(type)) return;
+        container.querySelectorAll('.reaction-btn').forEach(b => b.disabled = true);
+        try {
+          const { error } = await supabaseClient.rpc('toggle_review_reaction', {
+            p_review_id: reviewId, p_reaction: type, p_visitor_id: visitorId
+          });
+          if (error) throw error;
+          await loadReactions(container);
+        } catch (e) {
+          console.error('Не удалось сохранить реакцию:', e);
+          alert('Не удалось сохранить реакцию. Проверь подключение Supabase и функцию toggle_review_reaction.');
+        } finally {
+          container.querySelectorAll('.reaction-btn').forEach(b => b.disabled = false);
+        }
+      });
+    });
+  });
+})();
+</script>
 </body>
 </html>
